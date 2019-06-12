@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Implementation-Title: client
+Implementation-Version: 1.0-SNAPSHOT
+Built-By: estinca
+Implementation-Vendor-Id: com.est.cms
+Build-Jdk: 1.8.0_212
+Implementation-URL: https://projects.spring.io/spring-boot/#/spring-bo
+ ot-starter-parent/cms/client
+Created-By: Maven Integration for Eclipse
+
