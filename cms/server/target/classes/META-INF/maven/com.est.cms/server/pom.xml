@@ -7,11 +7,9 @@
 		<groupId>com.est</groupId>
 		<artifactId>cms</artifactId>
 		<version>1.0-SNAPSHOT</version>
-		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.est.cms</groupId>
 	<artifactId>server</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<name>server</name>
 	<description>Backend of the application</description>
 
@@ -21,6 +19,26 @@
 	</properties>
 
 	<dependencies>
+
+		<dependency>
+			<groupId>com.est.repository</groupId>
+			<artifactId>dbm</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.est.repository</groupId>
+			<artifactId>api</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.est</groupId>
+			<artifactId>utils</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+		
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -40,6 +58,10 @@
 			<version>2.3.6.RELEASE</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-commons</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -47,11 +69,6 @@
 			<optional>true</optional>
 		</dependency>
 
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<optional>true</optional>
-		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>

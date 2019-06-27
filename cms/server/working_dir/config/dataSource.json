@@ -1,0 +1,14 @@
+{
+	"databaseType": "MYSQL",
+	"host": "localhost",
+	"port": "3306",
+	"databaseName": "cms_est",
+    "useSSL": false,
+    "serverTimezone": "UTC",
+	"username": "estinca",
+	"password": "jr1992es",
+	"packagesToScan": [
+	
+	]
+ 
+}
