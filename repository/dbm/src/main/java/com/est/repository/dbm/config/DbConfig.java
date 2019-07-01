@@ -21,7 +21,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
-import com.est.utils.config.JsonPropertiesConfigUtils;
+import com.est.utils.config.JsonConfigUtils;
 import com.est.utils.config.exception.JsonConfigException;
 
 @Profile("DBM")
@@ -35,7 +35,7 @@ public class DbConfig {
 
 	@PostConstruct
 	public void init() throws JsonConfigException {
-		config = JsonPropertiesConfigUtils.loadJsonConfig("config/dataSource.json", DataSourceConfig.class);
+		config = JsonConfigUtils.loadJsonConfig("config/dataSource.json", DataSourceConfig.class);
 	}
 	
     @Bean

@@ -1,0 +1,20 @@
+<cms-header
+  [fixed]="true"
+  [navbarBrandFull]="{src: 'assets/img/status/online.png', width: 89, height: 25, alt: 'CMS Logo'}"
+  [navbarBrandMinimized]="{src: 'assets/img/brand/sygnet.svg', width: 30, height: 30, alt: 'CMS Logo'}"
+  [sidebarToggler]="'lg'"
+  [asideMenuToggler]="'lg'">
+</cms-header>
+
+<div class="app-body">
+  <cms-left-sidebar></cms-left-sidebar>
+  <main class="main">
+    <cms-breadcrumb [breadcrumbs]="breadCumbs" [addUrl]="addUrl" [addText]="addText"></cms-breadcrumb>
+    <div class="container-fluid">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+  <cms-right-sidebar [fixed]="true" [display]="false"></cms-right-sidebar>
+</div>
+
+<cms-footer [fixed]="false"></cms-footer>
