@@ -30,7 +30,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
   public form: FormGroup;
   public error: string = null;
 
-  private redirectUrl: string = '/';
+  private redirectUrl: string = '/dashboard';
 
   constructor(private fb: FormBuilder, private authService: AuthenticationService, private router: Router,
               private route: ActivatedRoute) {
@@ -63,6 +63,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
       this.authService.authenticate(this.form.value.username, this.form.value.password)
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((res: boolean) => {
+          EmitterService.of("userLoggedIn").emit(true);
           if (res) {
             this.router.navigateByUrl(this.redirectUrl);
           }

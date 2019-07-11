@@ -7,8 +7,8 @@ import {HttpLoaderFactory} from './utils/functions';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {JwtModule} from '@auth0/angular-jwt';
 import {AlertModule, ModalModule} from 'ngx-bootstrap';
-import { PaginationComponent } from './comonent/pagination/pagination.component';
-import { FlashMessageComponent } from './comonent/flash-message/flash-message.component';
+import { PaginationComponent } from './component/pagination/pagination.component';
+import { FlashMessageComponent } from './component/flash-message/flash-message.component';
 import { ConfirmModalComponent } from './modal/confirm-modal/confirm-modal.component';
 import {NgxSelectModule} from 'ngx-select-ex';
 

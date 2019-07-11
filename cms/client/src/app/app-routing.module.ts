@@ -7,6 +7,7 @@ import { RouteType } from './shared/enums/route.type';
 import { EmptyLayoutComponent } from './layout/empty-layout/empty-layout.component';
 import { LoginComponent } from './pages/login/login.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { AuthGuardService } from './shared/service/auth-guard.service';
 
 const routes: Routes = [
   {
@@ -19,8 +20,10 @@ const routes: Routes = [
         component: DashboardComponent,
         data: { breadCrumbs: BreadCrumbConfig.getBreadCrumbConfig(RouteType.DASHBOARD)}
       }
-    ]
+    ],
+      canActivate: [AuthGuardService]
   },
+
   {
     path: '',
     component: EmptyLayoutComponent,
@@ -35,6 +38,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [AuthGuardService]
 })
 export class AppRoutingModule { }

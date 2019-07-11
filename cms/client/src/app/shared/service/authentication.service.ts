@@ -69,7 +69,7 @@ export class AuthenticationService {
     const tokenInfo = this.getTokenInfo();
 
     if (tokenInfo === null) {
-      of(false);
+      return of(false);
     }
 
     return this.restService.refreshToken(tokenInfo.refreshToken).pipe(
