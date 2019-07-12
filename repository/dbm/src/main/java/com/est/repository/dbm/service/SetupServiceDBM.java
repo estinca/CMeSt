@@ -27,7 +27,12 @@ import com.est.repository.api.service.SetupService;
 @Service
 public class SetupServiceDBM implements SetupService {
 
-    private static final String[] TABLES_NEEDED = {"users", "user_roles"};
+    private static final String[] TABLES_NEEDED = {
+		"users", 
+		"user_roles",
+		"sites"
+    };
+    
 	private final DataSource dataSource;
     private final PasswordEncoder passwordEncoder;
     private final UserServiceDBM userService;

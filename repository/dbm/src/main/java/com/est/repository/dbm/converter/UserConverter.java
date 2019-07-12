@@ -6,7 +6,7 @@ import com.est.repository.api.model.User;
 import com.est.repository.dbm.domain.UserDB;
 
 @Component
-public class UserConverterRDBMS  implements Converter<User, UserDB> {
+public class UserConverter  implements Converter<User, UserDB> {
 
 
     @Override

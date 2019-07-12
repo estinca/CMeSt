@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.est.repository.api.model.User;
 import com.est.repository.api.service.UserService;
-import com.est.repository.dbm.converter.UserConverterRDBMS;
+import com.est.repository.dbm.converter.UserConverter;
 import com.est.repository.dbm.dao.UserDAO;
 
 @Service
@@ -19,10 +19,10 @@ import com.est.repository.dbm.dao.UserDAO;
 public class UserServiceDBM implements UserService {
 
     private final UserDAO userDAO;
-    private final UserConverterRDBMS converter;
+    private final UserConverter converter;
 
     @Autowired
-    public UserServiceDBM (UserDAO userDAO, UserConverterRDBMS converter) {
+    public UserServiceDBM (UserDAO userDAO, UserConverter converter) {
         this.userDAO = userDAO;
         this.converter = converter;
     }
