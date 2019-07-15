@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Implementation-Title: core-common
+Implementation-Version: 1.0-SNAPSHOT
+Built-By: estinca
+Implementation-Vendor-Id: com.est.core
+Build-Jdk: 1.8.0_212
+Implementation-URL: https://projects.spring.io/spring-boot/#/spring-bo
+ ot-starter-parent/core/core-common
+Created-By: Maven Integration for Eclipse
+

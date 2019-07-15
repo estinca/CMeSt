@@ -11,6 +11,7 @@ public interface SiteService {
 	
 	Page<Site> getSites(Pageable pageable);
 	Optional<Site> getSiteById(String id);
+	Optional<Site> getSiteByName(String name);
 	Site create(Site site);
 	Site update(Site site);
 	void delete(Site site);

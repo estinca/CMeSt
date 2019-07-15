@@ -19,6 +19,7 @@
 	<modules>
 		<module>server</module>
 		<module>client</module>
+		<module>core</module>
 	</modules>
 
 	<dependencyManagement>

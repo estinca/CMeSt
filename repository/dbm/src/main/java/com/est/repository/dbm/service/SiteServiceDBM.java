@@ -5,13 +5,15 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import com.est.repository.api.model.Site;
 import com.est.repository.api.service.SiteService;
 import com.est.repository.dbm.converter.SiteConverter;
 import com.est.repository.dbm.dao.SiteDAO;
-import com.est.repository.dbm.domain.SiteDB;
+import com.est.utils.UrlUtils;
 
+@Service
 public class SiteServiceDBM implements SiteService{
 
 	private SiteDAO siteDAO;
@@ -34,13 +36,19 @@ public class SiteServiceDBM implements SiteService{
 	}
 
 	@Override
+	public Optional<Site> getSiteByName(String name) {
+		return siteDAO.findByName(name).map(siteConverter::fromDB);
+	}
+	
+	@Override
 	public Site create(Site site) {
-		
+		site.setBasePath(UrlUtils.optimizeUrl(site.getBasePath()));
 		return siteConverter.fromDB(siteDAO.saveAndFlush(siteConverter.toDB(site, false)));
 	}
 
 	@Override
 	public Site update(Site site) {
+		site.setBasePath(UrlUtils.optimizeUrl(site.getBasePath()));
 		return siteConverter.fromDB(siteDAO.saveAndFlush(siteConverter.toDB(site, true)));
 	}
 

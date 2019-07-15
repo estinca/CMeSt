@@ -2,6 +2,7 @@ package com.est.repository.dbm.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
@@ -75,12 +76,51 @@ public class SiteServiceDBMTest {
 		Optional<Site> result = siteService.getSiteById("id");
 		assertFalse(result.isPresent());	
 	}
+	
+	@Test
+	public void getSiteByName_success() {
+		when(siteDAO.findByName(anyString())).thenReturn(Optional.of(getSiteDb()));
+		
+		Optional<Site> result = siteService.getSiteByName("name");
+		assertTrue(result.isPresent());
+		verify(siteConverter).fromDB(any(SiteDB.class));
+	}
+	
+	@Test
+	public void getSiteByName_empty() {
+		when(siteDAO.findByName(anyString())).thenReturn(Optional.empty());
+		
+		Optional<Site> result = siteService.getSiteByName("name");
+		assertFalse(result.isPresent());	
+	}
+	
 
 	@Test
 	public void create_success() {
+		when(siteDAO.saveAndFlush(any(SiteDB.class))).thenReturn(getSiteDb());
 		
+		Site site = siteService.create(getSite());
+		assertNotNull(site);
+		verify(siteConverter).toDB(any(Site.class), anyBoolean());
+		verify(siteConverter).fromDB(any(SiteDB.class));
 	}
 	
+	@Test
+	public void update_success() {
+		when(siteDAO.saveAndFlush(any(SiteDB.class))).thenReturn(getSiteDb());
+		
+		Site site = siteService.update(getSite());
+		assertNotNull(site);
+		verify(siteConverter).toDB(any(Site.class), anyBoolean());
+		verify(siteConverter).fromDB(any(SiteDB.class));
+	}
+	
+	@Test
+	public void delete() {
+		siteService.delete(getSite());
+		verify(siteConverter).toDB(any(Site.class), anyBoolean());
+		verify(siteDAO).delete(any(SiteDB.class));
+	}
 	
 	private List<SiteDB> getSiteDbList() {
 		List<SiteDB> list = new ArrayList<>();
