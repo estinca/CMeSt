@@ -30,14 +30,14 @@ public class ErrorHandler {
 		return new ApiError(HttpStatus.BAD_REQUEST.value(),"error.validation", errors);
 	}
 	
-	@ExceptionHandler(MethodArgumentNotValidException.class)
+	@ExceptionHandler(NotFoundException.class)
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	@ResponseBody
 	public ApiError handleNotFound(NotFoundException ex) {
 		return new ApiError(HttpStatus.NOT_FOUND.value(),"error.404", ex.getMessage());
 	}
 	
-	@ExceptionHandler(MethodArgumentNotValidException.class)
+	@ExceptionHandler(ApiException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ResponseBody
 	public ApiError handleApiException(ApiException ex) {

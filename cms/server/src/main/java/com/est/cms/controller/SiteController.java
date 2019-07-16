@@ -89,7 +89,7 @@ public class SiteController {
 		
 		if(!oldSite.getName().equalsIgnoreCase(newSite.getName()) 
 				&& siteService.getSiteByName(newSite.getName()).isPresent()) {
-			throw new ApiException("site,name.not-unique", "Site already exists");
+			throw new ApiException("site.name.not-unique", "Site already exists");
 		}
 		newSite.setId(oldSite.getId());
 		newSite.setCreatedAt(oldSite.getCreatedAt());

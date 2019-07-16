@@ -8,37 +8,48 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.est.repository.api.exception.RepositoryException;
+import com.est.repository.api.model.Site;
 import com.est.repository.api.model.User;
 import com.est.repository.api.service.SetupService;
+import com.est.repository.api.service.SiteService;
 import com.est.repository.api.service.StubService;
 import com.est.repository.api.service.UserService;
+import com.est.repository.dbm.service.stubs.SiteStubLoader;
 import com.est.repository.dbm.service.stubs.UserStubLoader;
 
 
-//@Profile("stubs")
-//@Service
+@Profile("stubs")
+@Service
 public class StubServiceDBM implements StubService {
 
 	
 	private PasswordEncoder passwordEncoder;
 	private UserService userService;
-	private SetupService setupService;
+	private SiteService siteService;
 
 	private List<User> users;
+	private List<Site> sites;
 	
-	//TODO userservice
 	@Autowired
-	public StubServiceDBM(PasswordEncoder passwordEncoder, SetupService setupService, UserService userService) {
+	public StubServiceDBM(PasswordEncoder passwordEncoder, UserService userService, SiteService siteService) {
 		this.passwordEncoder = passwordEncoder;
-		this.setupService = setupService;
 		this.userService = userService;
+		this.siteService = siteService;
 	}
 	
 	@Override
 	public void loadStubs() throws RepositoryException {
-		setupService.setupRepository();
 		
-		users = UserStubLoader.loadUsers(passwordEncoder, userService);
+		users = UserStubLoader.loadUsers(passwordEncoder);
+		for(User user: users) {
+			userService.create(user);
+		}
+		
+		sites = SiteStubLoader.loadSites();
+		for(Site site: sites) {
+			siteService.create(site);
+		}
+		
 	}
 
 }

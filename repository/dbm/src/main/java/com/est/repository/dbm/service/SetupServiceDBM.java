@@ -21,8 +21,12 @@ import org.springframework.stereotype.Service;
 
 import com.est.repository.api.exception.RepositoryException;
 import com.est.repository.api.model.Role;
+import com.est.repository.api.model.Site;
 import com.est.repository.api.model.User;
 import com.est.repository.api.service.SetupService;
+import com.est.repository.api.service.SiteService;
+import com.est.repository.api.service.StubService;
+import com.est.repository.api.service.UserService;
 
 @Service
 public class SetupServiceDBM implements SetupService {
@@ -35,15 +39,21 @@ public class SetupServiceDBM implements SetupService {
     
 	private final DataSource dataSource;
     private final PasswordEncoder passwordEncoder;
-    private final UserServiceDBM userService;
+    private final UserService userService;
+    private final StubService stubService;
     private final Map<String, String> rawSettings;
+	private SiteService siteService;
 
     @Autowired
-    public SetupServiceDBM(DataSource dataSource, PasswordEncoder passwordEncoder, UserServiceDBM userService,
+    public SetupServiceDBM(DataSource dataSource, PasswordEncoder passwordEncoder,
+    		UserService userService, SiteService siteService,
+    		@Autowired(required = false) StubService stubService,
     		@Qualifier("rawSettingsMap") Map<String, String> rawSettings) {
         this.dataSource = dataSource;
         this.passwordEncoder = passwordEncoder;
         this.userService = userService;
+		this.siteService = siteService;
+        this.stubService = stubService;
         this.rawSettings = rawSettings;
     }
 
@@ -75,7 +85,7 @@ public class SetupServiceDBM implements SetupService {
     }
 
     @Override
-    public void setupRepository() {
+    public void setupRepository() throws RepositoryException {
     	MetadataSources metadataSources = new MetadataSources(
     			new StandardServiceRegistryBuilder().applySettings(rawSettings).build());
     	
@@ -93,6 +103,13 @@ public class SetupServiceDBM implements SetupService {
     	admin.setRoles(Arrays.asList(Role.values()));
     	userService.create(admin);
     	
-    	//TODO create site object
+    	Site site = new Site();
+    	site.setName("default");
+    	site.setBasePath("/");
+    	siteService.create(site);
+    	
+    	if(stubService != null) {
+    		stubService.loadStubs();    		
+    	}
     }
 }

@@ -5,7 +5,7 @@ public class UrlUtils {
 	}
 	
 	public static String removeTrailingSlash(String url) {
-		if(url.endsWith("/")) {
+		if(url.length() > 1 && url.endsWith("/")) {
 			return url.substring(0, url.length() - 1);
 		}
 		return url;

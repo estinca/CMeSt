@@ -8,6 +8,7 @@ import { EmptyLayoutComponent } from './layout/empty-layout/empty-layout.compone
 import { LoginComponent } from './pages/login/login.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { AuthGuardService } from './shared/service/auth-guard.service';
+import { SitesComponent } from './content/sites/sites.component';
 
 const routes: Routes = [
   {
@@ -19,6 +20,11 @@ const routes: Routes = [
         path: 'dashboard',
         component: DashboardComponent,
         data: { breadCrumbs: BreadCrumbConfig.getBreadCrumbConfig(RouteType.DASHBOARD)}
+      },
+      {
+        path: 'sites',
+        component: SitesComponent,
+        data: { breadCrumbs: BreadCrumbConfig.getBreadCrumbConfig(RouteType.SITES)}
       }
     ],
       canActivate: [AuthGuardService]
