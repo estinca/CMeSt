@@ -36,7 +36,7 @@ public class SiteDB {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdAt;
 
-	@Column(name = "update_at", nullable = false)
+	@Column(name = "updated_at", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date updatedAt;
 	

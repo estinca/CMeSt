@@ -26,8 +26,9 @@ export class SiteService {
 
     return this.restService.get(`/sites?page=${page}&size=${pageSize}`, this.authService.getToken()).pipe(
       map(res => {
+
         const sites: Site[] = [];
-        for (const item of res.items) {
+        for (const item of res.data.content) {
           sites.push(MappingUtil.mapItemToSite(item));
         }
 

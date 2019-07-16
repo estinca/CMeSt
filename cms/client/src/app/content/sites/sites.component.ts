@@ -57,14 +57,14 @@ export class SitesComponent extends BaseComponent implements OnInit {
     this.error = null;
     this.success = null;
     this.siteService.getSites(page)
-      .pipe(
-        takeUntil(this.ngUnsubscribe),
+    .pipe(
+      takeUntil(this.ngUnsubscribe),
       ).subscribe((collection: PaginatedCollection) => {
-      if (collection != null) {
-        this.currentPage = page;
-        this.collection = collection;
-        this.router.navigateByUrl(`/sites?page=${page}`);
-      }
+        if (collection != null) {
+          this.currentPage = page;
+          this.collection = collection;
+          this.router.navigateByUrl(`/sites?page=${page}`);
+        }
       this.doneLoading();
     });
   }
