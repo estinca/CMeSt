@@ -37,7 +37,7 @@ export class MappingUtil {
   }
 
   public static mapItemToSite(item: any): Site {
-    const site = new Site();
+    const site: Site = new Site();
 
     site.id = item.id;
     site.name = item.name;
@@ -46,6 +46,7 @@ export class MappingUtil {
     site.updatedAt = new Date(item.updatedAt);
 
     return site;
+
   }
 
   public static mapItemToPage(item: any): Page {

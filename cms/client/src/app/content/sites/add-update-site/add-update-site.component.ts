@@ -58,6 +58,7 @@ export class AddUpdateSiteComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loading();
     this.route.params.pipe(
       takeUntil(this.ngUnsubscribe),
       mergeMap((params: Params) => {
@@ -70,8 +71,8 @@ export class AddUpdateSiteComponent extends BaseComponent implements OnInit {
       }),
     ).subscribe((site: Site) => {
       this.site = site;
-      this.doneLoading();
       this.buildForm();
+      this.doneLoading();
     });
   }
 

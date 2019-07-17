@@ -66,14 +66,13 @@ public class SiteController {
 	}
 	
 	
-	@GetMapping("/{id:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}")
+	@GetMapping("/{id:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}}")
 	public ResponseEntity<ApiResponse> getSite(@PathVariable String id) throws NotFoundException {
-		
 		return new ResponseEntity<>(ApiResponse.createResponse(siteJsonConverter.toJson(getSiteById(id))),  HttpStatus.OK);
 	}
 	
 	
-	@DeleteMapping("/{id:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}")
+	@DeleteMapping("/{id:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}}")
 	public ResponseEntity<ApiResponse> deleteSite(@PathVariable String id) throws NotFoundException {
 		
 		siteService.getSiteById(id).ifPresent(siteService::delete);
@@ -81,7 +80,7 @@ public class SiteController {
 	}
 	
 	
-	@PutMapping("/{id:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}")
+	@PutMapping("/{id:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}}")
 	public ResponseEntity<ApiResponse> updateSite(@PathVariable String id, @RequestBody @Valid SiteRequest request) throws NotFoundException {
 		
 		Site oldSite = getSiteById(id);

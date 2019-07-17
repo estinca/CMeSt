@@ -39,9 +39,12 @@ export class SiteService {
   }
 
   public getSiteById(id: string): Observable<Site> {
+
     return this.restService.get(`/sites/${id}`, this.authService.getToken())
       .pipe(
-        map((res: any) => MappingUtil.mapItemToSite(res)),
+        map((res: any) => {
+         return MappingUtil.mapItemToSite(res.data); }),
+
         catchSomethingWrong('siteError', null)
       );
   }

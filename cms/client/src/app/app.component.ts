@@ -21,10 +21,10 @@ export class AppComponent extends BaseComponent {
     this.translateService.setDefaultLang('en');
     this.translateService.use('en');
 
-  //   EmitterService.of('loading')
-  //     .pipe(takeUntil(this.ngUnsubscribe))
-  //     .subscribe((loading: boolean) => this.isLoading = loading);
-  // }
+    EmitterService.of('loading')
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((loading: boolean) => this.isLoading = loading);
+
 
     EmitterService.of("userLoggedIn")
       .pipe(takeUntil(this.ngUnsubscribe))
