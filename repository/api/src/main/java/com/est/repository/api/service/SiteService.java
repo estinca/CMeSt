@@ -15,4 +15,5 @@ public interface SiteService {
 	Site create(Site site);
 	Site update(Site site);
 	void delete(Site site);
+	Optional<Site> getSiteByPath(String basePath);
 }

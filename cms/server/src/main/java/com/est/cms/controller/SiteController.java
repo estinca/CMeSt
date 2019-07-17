@@ -23,6 +23,7 @@ import com.est.core.common.rest.ApiResponse;
 import com.est.core.common.rest.exception.ApiException;
 import com.est.repository.api.model.Site;
 import com.est.repository.api.service.SiteService;
+import com.est.utils.UrlUtils;
 
 import javassist.NotFoundException;
 @RestController
@@ -44,9 +45,15 @@ public class SiteController {
 	public ResponseEntity<ApiResponse> createSite(@RequestBody @Valid SiteRequest siteRequest) {
 		Site site = siteJsonConverter.fromJson(siteRequest);
 		
+		
 		if(siteService.getSiteByName(site.getName()).isPresent()) {
 			throw new ApiException("site.name.not-unique", "Site already exists.");
 		}
+
+		site.setBasePath(UrlUtils.optimizeUrl(site.getBasePath()));
+		if (siteService.getSiteByPath(site.getBasePath()).isPresent()) {
+            throw new ApiException("site.path.not-unique", "Site path already exists.");
+        }
 		
 		site = siteService.create(site);
 		
@@ -90,6 +97,11 @@ public class SiteController {
 				&& siteService.getSiteByName(newSite.getName()).isPresent()) {
 			throw new ApiException("site.name.not-unique", "Site already exists");
 		}
+		if(!oldSite.getBasePath().equalsIgnoreCase(newSite.getBasePath()) 
+				&& siteService.getSiteByPath(newSite.getBasePath()).isPresent()) {
+			throw new ApiException("site.path.not-unique", "Site path already exists");
+		}
+
 		newSite.setId(oldSite.getId());
 		newSite.setCreatedAt(oldSite.getCreatedAt());
 		

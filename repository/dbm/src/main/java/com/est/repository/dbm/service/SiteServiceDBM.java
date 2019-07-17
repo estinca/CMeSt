@@ -36,6 +36,11 @@ public class SiteServiceDBM implements SiteService{
 	}
 
 	@Override
+	public Optional<Site> getSiteByPath(String basePath) {
+		return siteDAO.findByBasePath(basePath).map(siteConverter::fromDB);
+	}
+	
+	@Override
 	public Optional<Site> getSiteByName(String name) {
 		return siteDAO.findByName(name).map(siteConverter::fromDB);
 	}
@@ -57,5 +62,6 @@ public class SiteServiceDBM implements SiteService{
 		siteDAO.delete(siteConverter.toDB(site, true));
 		
 	}
+
 
 }

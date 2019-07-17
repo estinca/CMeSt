@@ -52,19 +52,16 @@ export class SiteService {
   public createSite(data: any): Observable<Site> {
     return this.restService.post(`/sites`, data, this.authService.getToken())
       .pipe(
-        map((res: any) => MappingUtil.mapItemToSite(res)),
+        map((res: any) => MappingUtil.mapItemToSite(res.data)),
         catchError((error: HttpErrorResponse) => {
-          if (error.error instanceof ErrorEvent) {
-            EmitterService.of('siteError').emit('COMMON.ERRORS.something.wrong');
-          } else {
-            if (error.error.key === 'site_name_not_unique') {
+            console.log(JSON.stringify(error.error))
+            if (error.error.title === 'site.name.not-unique') {
               EmitterService.of('siteError').emit('SERVICE.ERRORS.SITE.name.not-unique');
-            } else if (error.error.key === 'site_path_not_unique') {
+            } else if (error.error.title === 'site.path.not-unique') {
               EmitterService.of('siteError').emit('SERVICE.ERRORS.SITE.path.not-unique');
             } else {
               EmitterService.of('siteError').emit('COMMON.ERRORS.something.wrong');
             }
-          }
 
           return of(null);
         })
@@ -74,18 +71,14 @@ export class SiteService {
   public updateSite(id: string, data: any): Observable<Site> {
     return this.restService.put(`/sites/${id}`, data, this.authService.getToken())
       .pipe(
-        map((res: any) => MappingUtil.mapItemToSite(res)),
+        map((res: any) => MappingUtil.mapItemToSite(res.data)),
         catchError((error: HttpErrorResponse) => {
-          if (error.error instanceof ErrorEvent) {
-            EmitterService.of('siteError').emit('COMMON.ERRORS.something.wrong');
+          if (error.error.title === 'site.name.not-unique') {
+            EmitterService.of('siteError').emit('SERVICE.ERRORS.SITE.name.not-unique');
+          } else if (error.error.title === 'site.path.not-unique') {
+            EmitterService.of('siteError').emit('SERVICE.ERRORS.SITE.path.not-unique');
           } else {
-            if (error.error.key === 'site_name_not_unique') {
-              EmitterService.of('siteError').emit('SERVICE.ERRORS.SITE.name.not-unique');
-            } else if (error.error.key === 'site_path_not_unique') {
-              EmitterService.of('siteError').emit('SERVICE.ERRORS.SITE.path.not-unique');
-            } else {
-              EmitterService.of('siteError').emit('COMMON.ERRORS.something.wrong');
-            }
+            EmitterService.of('siteError').emit('COMMON.ERRORS.something.wrong');
           }
 
           return of(null);

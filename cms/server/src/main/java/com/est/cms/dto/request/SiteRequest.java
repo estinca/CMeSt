@@ -15,6 +15,6 @@ public class SiteRequest {
 	private String name;
 
 	@NotBlank(message = "site.path.blank")
-	@Pattern(regexp = "^[a-zA-Z0-9_/]*$", message="page.path.invalid")
+	@Pattern(regexp = "^[a-zA-Z0-9-_/]*$", message="page.path.invalid")
 	private String path;
 }

@@ -10,6 +10,8 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { AuthGuardService } from './shared/service/auth-guard.service';
 import { SitesComponent } from './content/sites/sites.component';
 import { AddUpdateSiteComponent } from './content/sites/add-update-site/add-update-site.component';
+import { PagesComponent } from './content/pages/pages.component';
+import { AddUpdatePageComponent } from './content/pages/add-update-page/add-update-page.component';
 
 const routes: Routes = [
   {
@@ -38,6 +40,23 @@ const routes: Routes = [
         component: AddUpdateSiteComponent,
         canActivate: [AuthGuardService],
         data: {breadCrumbs: BreadCrumbConfig.getBreadCrumbConfig(RouteType.SITES_UPDATE)}
+      },
+      {
+        path: 'pages',
+        component: PagesComponent,
+        data: { breadCrumbs: BreadCrumbConfig.getBreadCrumbConfig(RouteType.PAGES)}
+      },
+      {
+        path: 'pages/add',
+        component: AddUpdatePageComponent,
+        canActivate: [AuthGuardService],
+        data: {breadCrumbs: BreadCrumbConfig.getBreadCrumbConfig(RouteType.PAGES_ADD)}
+      },
+      {
+        path: 'pages/update/:id',
+        component: AddUpdatePageComponent,
+        canActivate: [AuthGuardService],
+        data: {breadCrumbs: BreadCrumbConfig.getBreadCrumbConfig(RouteType.PAGES_UPDATE)}
       }
     ],
       canActivate: [AuthGuardService]
