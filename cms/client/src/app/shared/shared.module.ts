@@ -11,11 +11,6 @@ import { PaginationComponent } from './component/pagination/pagination.component
 import { FlashMessageComponent } from './component/flash-message/flash-message.component';
 import { ConfirmModalComponent } from './modal/confirm-modal/confirm-modal.component';
 import {NgxSelectModule} from 'ngx-select-ex';
-import { SiteService } from './service/site.service';
-import { RestService } from './service/rest.service';
-import { AuthenticationService } from './service/authentication.service';
-import { AuthGuardService } from './service/auth-guard.service';
-import { FlashMessageService } from './service/flash-message.service';
 
 
 export function jwtTokenGetter() {
@@ -49,13 +44,6 @@ export function jwtTokenGetter() {
     NgxSelectModule,
 
   ],
-  // providers: [
-  //   SiteService,
-  //   RestService,
-  //   AuthenticationService,
-  //   AuthGuardService,
-  //   FlashMessageService
-  // ],
 
   declarations: [
     PaginationComponent,

@@ -8,12 +8,14 @@ import org.springframework.data.domain.Pageable;
 import com.est.repository.api.model.Site;
 
 public interface SiteService {
-	
-	Page<Site> getSites(Pageable pageable);
-	Optional<Site> getSiteById(String id);
-	Optional<Site> getSiteByName(String name);
-	Site create(Site site);
-	Site update(Site site);
-	void delete(Site site);
-	Optional<Site> getSiteByPath(String basePath);
+
+    Site create(Site site);
+
+    Site update(Site oldSite, Site newSite);
+
+    Optional<Site> getSiteById(String id);
+
+    Page<Site> getSites(Pageable pageable);
+
+    void delete(Site site);
 }

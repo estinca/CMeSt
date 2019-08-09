@@ -11,14 +11,14 @@ public class SiteStubLoader {
 		
 		Site shop = new Site();
 		shop.setName("shop");
-		shop.setBasePath("/shop");
+		shop.setPath("/shop");
 		
 		sites.add(shop);
 		
 		
 		Site blog = new Site();
 		blog.setName("blog");
-		blog.setBasePath("/blog");
+		blog.setPath("/blog");
 		
 		sites.add(blog);
 		

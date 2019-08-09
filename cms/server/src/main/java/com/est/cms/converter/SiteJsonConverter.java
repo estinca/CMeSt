@@ -15,7 +15,7 @@ public class SiteJsonConverter implements JsonConverter<Site, SiteRequest, SiteR
 	public Site fromJson(SiteRequest request) {
 		Site site = new Site();
 		site.setName(request.getName());
-		site.setBasePath(request.getPath());
+		site.setPath(request.getPath());
 		
 		return site;
 	}
@@ -25,7 +25,7 @@ public class SiteJsonConverter implements JsonConverter<Site, SiteRequest, SiteR
 		SiteResponse response = new SiteResponse();
 		response.setId(site.getId());
 		response.setName(site.getName());
-		response.setPath(site.getBasePath());
+		response.setPath(site.getPath());
 		response.setCreatedAt(site.getCreatedAt());
 		response.setUpdatedAt(site.getUpdatedAt());
 		

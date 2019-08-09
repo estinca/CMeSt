@@ -28,7 +28,7 @@ export class SiteService {
       map(res => {
 
         const sites: Site[] = [];
-        for (const item of res.data.content) {
+        for (const item of res.items) {
           sites.push(MappingUtil.mapItemToSite(item));
         }
 
@@ -43,7 +43,7 @@ export class SiteService {
     return this.restService.get(`/sites/${id}`, this.authService.getToken())
       .pipe(
         map((res: any) => {
-         return MappingUtil.mapItemToSite(res.data); }),
+         return MappingUtil.mapItemToSite(res); }),
 
         catchSomethingWrong('siteError', null)
       );
@@ -52,9 +52,11 @@ export class SiteService {
   public createSite(data: any): Observable<Site> {
     return this.restService.post(`/sites`, data, this.authService.getToken())
       .pipe(
-        map((res: any) => MappingUtil.mapItemToSite(res.data)),
+        map((res: any) => {
+            return MappingUtil.mapItemToSite(res)
+          }
+        ),
         catchError((error: HttpErrorResponse) => {
-            console.log(JSON.stringify(error.error))
             if (error.error.title === 'site.name.not-unique') {
               EmitterService.of('siteError').emit('SERVICE.ERRORS.SITE.name.not-unique');
             } else if (error.error.title === 'site.path.not-unique') {

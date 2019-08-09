@@ -1,16 +1,19 @@
 package com.est.repository.api.exception;
 
-public class RepositoryException extends Exception {
-	
+import com.est.core.common.error.CoreException;
+
+public class RepositoryException extends CoreException {
+
+    /**
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
 
-	public RepositoryException(String arg0, Throwable arg1, boolean arg2, boolean arg3) {
-		super(arg0, arg1, arg2, arg3);
-		// TODO Auto-generated constructor stub
-	}
+	public RepositoryException(RepositoryError error) {
+        super(error);
+    }
 
-	public RepositoryException(String arg0, Throwable arg1) {
-		super(arg0, arg1);
-		// TODO Auto-generated constructor stub
-}
+    public RepositoryException(RepositoryError error, Throwable cause) {
+        super(error, cause);
+    }
 }

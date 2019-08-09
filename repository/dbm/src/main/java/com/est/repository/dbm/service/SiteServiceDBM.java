@@ -7,61 +7,83 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.est.repository.api.exception.RepositoryError;
+import com.est.repository.api.exception.RepositoryException;
 import com.est.repository.api.model.Site;
+import com.est.repository.api.service.PageService;
 import com.est.repository.api.service.SiteService;
 import com.est.repository.dbm.converter.SiteConverter;
 import com.est.repository.dbm.dao.SiteDAO;
-import com.est.utils.UrlUtils;
+
+import lombok.var;
 
 @Service
 public class SiteServiceDBM implements SiteService{
 
-	private SiteDAO siteDAO;
-	private SiteConverter siteConverter;
 
-	@Autowired
-	public SiteServiceDBM(SiteDAO siteDAO, SiteConverter siteConverter) {
-		this.siteDAO = siteDAO;
-		this.siteConverter = siteConverter;
-	}
-	
-	@Override
-	public Page<Site> getSites(Pageable pageable) {
-		return siteDAO.findAll(pageable).map(siteConverter::fromDB);
-	}
+    private final SiteDAO repository;
+    private final SiteConverter converter;
+    private final PageService pageService;
 
-	@Override
-	public Optional<Site> getSiteById(String id) {
-		return siteDAO.findById(id).map(siteConverter::fromDB);
-	}
+    @Autowired
+    public SiteServiceDBM(SiteDAO repository, SiteConverter converter, PageService pageService) {
+        this.repository = repository;
+        this.converter = converter;
+        this.pageService = pageService;
+    }
 
-	@Override
-	public Optional<Site> getSiteByPath(String basePath) {
-		return siteDAO.findByBasePath(basePath).map(siteConverter::fromDB);
-	}
-	
-	@Override
-	public Optional<Site> getSiteByName(String name) {
-		return siteDAO.findByName(name).map(siteConverter::fromDB);
-	}
-	
-	@Override
-	public Site create(Site site) {
-		site.setBasePath(UrlUtils.optimizeUrl(site.getBasePath()));
-		return siteConverter.fromDB(siteDAO.saveAndFlush(siteConverter.toDB(site, false)));
-	}
+    @Override
+    public Site create(Site site) {
+        if (repository.findByName(site.getName()).isPresent()) {
+            throw new RepositoryException(RepositoryError.SITE_NAME_NOT_UNIQUE);
+        }
 
-	@Override
-	public Site update(Site site) {
-		site.setBasePath(UrlUtils.optimizeUrl(site.getBasePath()));
-		return siteConverter.fromDB(siteDAO.saveAndFlush(siteConverter.toDB(site, true)));
-	}
+        if (repository.findByPath(site.getPath()).isPresent()) {
+            throw new RepositoryException(RepositoryError.SITE_PATH_NOT_UNIQUE);
+        }
 
-	@Override
-	public void delete(Site site) {
-		siteDAO.delete(siteConverter.toDB(site, true));
-		
-	}
+        site = converter.fromDB(repository.saveAndFlush(converter.toDB(site, false)));
 
+//        var page = new com.est.repository.api.model.Page();
+//        page.setName(site.getName());
+//        page.setTitle(site.getName());
+//        page.setSite(site);
+//
+//        pageService.create(page);
+
+        return site;
+    }
+
+    @Override
+    public Site update(Site oldSite, Site newSite) {
+
+        if (!oldSite.getName().equalsIgnoreCase(newSite.getName()) && repository.findByName(newSite.getName()).isPresent()) {
+            throw new RepositoryException(RepositoryError.SITE_NAME_NOT_UNIQUE);
+        }
+
+        if (!oldSite.getPath().equalsIgnoreCase(newSite.getPath()) && repository.findByPath(newSite.getPath()).isPresent()) {
+            throw new RepositoryException(RepositoryError.SITE_PATH_NOT_UNIQUE);
+        }
+
+        newSite.setId(oldSite.getId());
+        newSite.setCreatedAt(oldSite.getCreatedAt());
+
+        return converter.fromDB(repository.saveAndFlush(converter.toDB(newSite, true)));
+    }
+
+    @Override
+    public Optional<Site> getSiteById(String id) {
+        return repository.findById(id).map(converter::fromDB);
+    }
+
+    @Override
+    public Page<Site> getSites(Pageable pageable) {
+        return repository.findAll(pageable).map(converter::fromDB);
+    }
+
+    @Override
+    public void delete(Site site) {
+        repository.deleteById(site.getId());
+    }
 
 }

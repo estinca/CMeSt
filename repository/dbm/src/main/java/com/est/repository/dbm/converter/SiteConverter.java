@@ -17,7 +17,7 @@ public class SiteConverter implements Converter<Site, SiteDB> {
 			db.setCreatedAt(entity.getCreatedAt());
 		}
 		db.setName(entity.getName());
-		db.setBasePath(entity.getBasePath());
+		db.setPath(entity.getPath());
 		db.setUpdatedAt(entity.getUpdatedAt());
 		
 		return db;
@@ -29,7 +29,7 @@ public class SiteConverter implements Converter<Site, SiteDB> {
 		
 		entity.setId(db.getId());
 		entity.setName(db.getName());
-		entity.setBasePath(db.getBasePath());
+		entity.setPath(db.getPath());
 		entity.setCreatedAt(db.getCreatedAt());
 		entity.setUpdatedAt(db.getUpdatedAt());
 		

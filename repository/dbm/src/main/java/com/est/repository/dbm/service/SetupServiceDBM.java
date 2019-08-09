@@ -1,12 +1,10 @@
 package com.est.repository.dbm.service;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Map;
-import java.util.Optional;
 
 import javax.sql.DataSource;
 
@@ -19,97 +17,95 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.est.repository.api.exception.RepositoryException;
 import com.est.repository.api.model.Role;
 import com.est.repository.api.model.Site;
 import com.est.repository.api.model.User;
 import com.est.repository.api.service.SetupService;
 import com.est.repository.api.service.SiteService;
-import com.est.repository.api.service.StubService;
 import com.est.repository.api.service.UserService;
+import com.est.repository.dbm.domain.PageDB;
+import com.est.repository.dbm.domain.SiteDB;
+import com.est.repository.dbm.domain.UserDB;
+
+import lombok.var;
+
 
 @Service
 public class SetupServiceDBM implements SetupService {
 
     private static final String[] TABLES_NEEDED = {
-		"users", 
-		"user_roles",
-		"sites"
+            "users",
+            "user_roles",
+            "sites"
     };
-    
-	private final DataSource dataSource;
+
+    private final DataSource dataSource;
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
-    private final StubService stubService;
+    private final SiteService siteService;
     private final Map<String, String> rawSettings;
-	private SiteService siteService;
 
     @Autowired
     public SetupServiceDBM(DataSource dataSource, PasswordEncoder passwordEncoder,
-    		UserService userService, SiteService siteService,
-    		@Autowired(required = false) StubService stubService,
-    		@Qualifier("rawSettingsMap") Map<String, String> rawSettings) {
+                             UserService userService, SiteService siteService,
+                             @Qualifier("rawSettingsMap") Map<String, String> rawSettings) {
         this.dataSource = dataSource;
         this.passwordEncoder = passwordEncoder;
         this.userService = userService;
-		this.siteService = siteService;
-        this.stubService = stubService;
+        this.siteService = siteService;
         this.rawSettings = rawSettings;
     }
 
     @Override
-    public boolean isRepositorySetup() throws RepositoryException {
-        ArrayList<String> tablesInDb = new ArrayList<>();
-        try {
-            ResultSet resultSet = dataSource.getConnection().getMetaData().getTables(null, null, "%", null);
-            while (resultSet.next()) {
-				tablesInDb.add(resultSet.getString("TABLE_NAME"));
-			}
-            
-            for(String table: TABLES_NEEDED) {
-            	if(!tablesInDb.contains(table)) {
-            		return false;
-            	}
-            }
-            
-            Optional<User> admin = userService.getUserByUsername("admin");
-            if(!admin.isPresent() || !admin.get().getRoles().contains(Role.ADMIN)) {
-            	return false;
-            } 
+    public boolean isRepositorySetup() throws SQLException {
+        var tablesInDb = new ArrayList<String>();
+        var resultSet = dataSource.getConnection().getMetaData().getTables(null, null, "%", null);
+        while (resultSet.next()) {
+            tablesInDb.add(resultSet.getString("TABLE_NAME"));
+        }
 
-        } catch(SQLException e) {
-            throw new RepositoryException("Something wrong in result set", e);
+        if(!userService.getUserByUsername("admin").isPresent())
+        {
+        	return false;
         }
         
+    	for (var table : TABLES_NEEDED) {
+            if (!tablesInDb.contains(table)) {
+                return false;
+            }
+        }
+
         return true;
     }
 
     @Override
-    public void setupRepository() throws RepositoryException {
-    	MetadataSources metadataSources = new MetadataSources(
-    			new StandardServiceRegistryBuilder().applySettings(rawSettings).build());
-    	
-    	metadataSources.addAnnotatedClass(User.class);
-    	
-    	SchemaExport schemaExport = new SchemaExport();
-    	schemaExport.setHaltOnError(false);
-    	schemaExport.setFormat(true);
-    	schemaExport.setDelimiter(";");
-    	schemaExport.execute(EnumSet.of(TargetType.DATABASE, TargetType.STDOUT), SchemaExport.Action.BOTH, metadataSources.buildMetadata());
-    	
-    	User admin = new User();
-    	admin.setUsername("admin");
-    	admin.setPassword(passwordEncoder.encode("admin"));
-    	admin.setRoles(Arrays.asList(Role.values()));
-    	userService.create(admin);
-    	
-    	Site site = new Site();
-    	site.setName("default");
-    	site.setBasePath("/");
-    	siteService.create(site);
-    	
-    	if(stubService != null) {
-    		stubService.loadStubs();    		
-    	}
+    public void setupRepository() {
+        var metaDataSrc = new MetadataSources(
+                new StandardServiceRegistryBuilder().applySettings(rawSettings).build()
+        );
+
+        metaDataSrc.addAnnotatedClass(UserDB.class);
+        metaDataSrc.addAnnotatedClass(SiteDB.class);
+        metaDataSrc.addAnnotatedClass(PageDB.class);
+
+
+        var schemaExport = new SchemaExport();
+        schemaExport.setHaltOnError(false);
+        schemaExport.setFormat(true);
+        schemaExport.setDelimiter(";");
+        schemaExport.execute(EnumSet.of(TargetType.DATABASE, TargetType.STDOUT), SchemaExport.Action.BOTH,
+                metaDataSrc.buildMetadata());
+
+        var admin = new User();
+        admin.setUsername("admin");
+        admin.setPassword(passwordEncoder.encode("admin"));
+        admin.setRoles(Arrays.asList(Role.values()));
+        userService.create(admin);
+
+        var site = Site.builder()
+                .name("default")
+                .path("/")
+                .build();
+        siteService.create(site);
     }
 }

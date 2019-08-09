@@ -9,5 +9,5 @@ import com.est.repository.dbm.domain.SiteDB;
 public interface SiteDAO extends JpaRepository<SiteDB, String> {
 	Optional<SiteDB> findByName(String name);
 
-	Optional<SiteDB> findByBasePath(String basePath);
+	Optional<SiteDB> findByPath(String path);
 }

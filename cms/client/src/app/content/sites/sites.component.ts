@@ -3,13 +3,12 @@ import {BaseComponent} from '../../base.component';
 import {PaginatedCollection} from '../../shared/models/paginated.collection';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {SiteService} from '../../shared/service/site.service';
-import {finalize, take, takeUntil} from 'rxjs/operators';
+import {take, takeUntil} from 'rxjs/operators';
 import {EmitterService} from '../../shared/service/emitterService';
 import {TranslateService} from '@ngx-translate/core';
 import {Site} from '../../shared/models/entity/site';
 import {BsModalRef, BsModalService, ModalOptions} from 'ngx-bootstrap';
 import {ConfirmModalComponent} from '../../shared/modal/confirm-modal/confirm-modal.component';
-import {initialState} from 'ngx-bootstrap/timepicker/reducer/timepicker.reducer';
 
 @Component({
   selector: 'cms-sites',
