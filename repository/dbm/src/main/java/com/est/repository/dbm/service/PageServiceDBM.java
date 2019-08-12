@@ -89,6 +89,11 @@ public class PageServiceDBM implements PageService {
     public Optional<Page> getPageByName(String name) {
         return repository.findByName(name).map(converter::fromDB);
     }
+    
+    @Override
+    public Optional<Page> getPageByPath(String path) {
+        return repository.findByPath(path).map(converter::fromDB);
+    }
 
     @Override
     public List<Page> getPagesBySite(Site site) {

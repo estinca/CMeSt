@@ -21,6 +21,8 @@ public interface PageService {
 
     Optional<Page> getPageByName(String name);
 
+    Optional<Page> getPageByPath(String path);
+
     List<Page> getPagesBySite(Site site);
 
     org.springframework.data.domain.Page<Page> getPagesBySiteAndParent(Site site, Page parent,
@@ -29,4 +31,5 @@ public interface PageService {
     Page getRootPageForSite(Site site) throws BrakingRepositoryException;
 
     org.springframework.data.domain.Page<Page> getPagesBySite(Site site, Pageable pageable);
+
 }

@@ -106,6 +106,13 @@ public class PageController {
 
         return new ResponseEntity<>(pageConverter.toJson(newPage), HttpStatus.OK);
     }
+    
+    @RequestMapping(value = "pages/{id}",
+            method = RequestMethod.DELETE)
+    public ResponseEntity<Void> deletePage(@PathVariable String id) {
+        pageService.getPageById(id).ifPresent(pageService::delete);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 
     private Site getSiteById(String id) {
         return siteService.getSiteById(id).

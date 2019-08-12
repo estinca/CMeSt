@@ -14,6 +14,7 @@ import com.est.repository.api.service.PageService;
 import com.est.repository.api.service.SiteService;
 import com.est.repository.dbm.converter.SiteConverter;
 import com.est.repository.dbm.dao.SiteDAO;
+import com.est.utils.UrlUtils;
 
 import lombok.var;
 
@@ -42,14 +43,17 @@ public class SiteServiceDBM implements SiteService{
             throw new RepositoryException(RepositoryError.SITE_PATH_NOT_UNIQUE);
         }
 
+        if(pageService.getPageByPath(UrlUtils.optimizeUrl(site.getPath())).isPresent()) {
+        	throw new RepositoryException(RepositoryError.PATH_NOT_UNIQUE);
+        }
         site = converter.fromDB(repository.saveAndFlush(converter.toDB(site, false)));
 
-//        var page = new com.est.repository.api.model.Page();
-//        page.setName(site.getName());
-//        page.setTitle(site.getName());
-//        page.setSite(site);
-//
-//        pageService.create(page);
+        var page = new com.est.repository.api.model.Page();
+        page.setName(site.getName());
+        page.setTitle(site.getName());
+        page.setSite(site);
+
+        pageService.create(page);
 
         return site;
     }
@@ -65,6 +69,10 @@ public class SiteServiceDBM implements SiteService{
             throw new RepositoryException(RepositoryError.SITE_PATH_NOT_UNIQUE);
         }
 
+        if(pageService.getPageByPath(UrlUtils.optimizeUrl(newSite.getPath())).isPresent()) {
+        	throw new RepositoryException(RepositoryError.PATH_NOT_UNIQUE);
+        }
+        
         newSite.setId(oldSite.getId());
         newSite.setCreatedAt(oldSite.getCreatedAt());
 

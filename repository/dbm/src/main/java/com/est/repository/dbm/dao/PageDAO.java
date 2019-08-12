@@ -26,4 +26,6 @@ public interface PageDAO extends JpaRepository<PageDB, String> {
                                                                 String id, Pageable pageable);
 
     Optional<PageDB> findBySiteAndParentIsNull(SiteDB site);
+
+	Optional<PageDB> findByPath(String path);
 }

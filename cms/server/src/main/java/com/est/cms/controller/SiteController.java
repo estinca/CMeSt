@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.est.cms.converter.SiteJsonConverter;
 import com.est.cms.dto.request.SiteRequest;
 import com.est.cms.dto.response.SiteResponse;
-import com.est.core.common.rest.ApiResponse;
 import com.est.core.common.rest.pagination.PaginatedResponse;
 import com.est.repository.api.model.Site;
 import com.est.repository.api.service.SiteService;
@@ -70,7 +69,7 @@ public class SiteController {
 
     @RequestMapping(value = "/{id:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}}",
             method = RequestMethod.DELETE)
-    public ResponseEntity<Void> delteSite(@PathVariable String id) {
+    public ResponseEntity<Void> deleteSite(@PathVariable String id) {
         siteService.getSiteById(id).ifPresent(siteService::delete);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
