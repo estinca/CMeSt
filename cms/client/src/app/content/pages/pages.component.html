@@ -10,6 +10,12 @@
     <div class="card">
       <div class="card-header">
         {{ 'COMPONENT.PAGES.title' | translate }}
+        <div class="card-actions float-right">
+          <a class="btn btn-outline-success btn-outline-success-card-action" [routerLink]="['/pages/add']"
+            placement="left" container="body">
+            <i class="fa fa-plus-square-o fa-lg"></i>
+          </a>
+        </div>
       </div>
       <div class="card-body">
         <div class="row">

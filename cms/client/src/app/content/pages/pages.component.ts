@@ -3,9 +3,13 @@ import {Site} from '../../shared/models/entity/site';
 import {TreeViewItem} from '../../shared/models/tree.view.item';
 import {BaseComponent} from '../../base.component';
 import {PageService} from '../../shared/service/page.service';
-import {takeUntil} from 'rxjs/operators';
+import {takeUntil, take} from 'rxjs/operators';
 import {PaginatedCollection} from '../../shared/models/paginated.collection';
 import {Page} from '../../shared/models/entity/page';
+import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap';
+import { TranslateService } from '@ngx-translate/core';
+import { ConfirmModalComponent } from 'src/app/shared/modal/confirm-modal/confirm-modal.component';
+import { EmitterService } from 'src/app/shared/service/emitterService';
 
 @Component({
   selector: 'cms-pages',
@@ -13,6 +17,13 @@ import {Page} from '../../shared/models/entity/page';
   styleUrls: ['./pages.component.scss']
 })
 export class PagesComponent extends BaseComponent implements OnInit {
+
+  private static readonly DELETE_CONFIRM_KEYS: string[] = [
+    'COMPONENT.PAGES.DELETE.title',
+    'COMPONENT.PAGES.DELETE.body',
+    'COMPONENT.PAGES.DELETE.ok',
+    'COMPONENT.PAGES.DELETE.close',
+  ];
 
   public collection: PaginatedCollection = null;
   public currentPage: number = 1;
@@ -24,11 +35,19 @@ export class PagesComponent extends BaseComponent implements OnInit {
 
   private treeItem: TreeViewItem = null;
 
-  constructor(private pageService: PageService) {
+  constructor(private pageService: PageService, private translate: TranslateService,
+    private modalService: BsModalService) {
     super();
   }
 
   ngOnInit() {
+
+    EmitterService.of('pageError')
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((error: string) => {
+        this.error = error;
+        this.doneLoading();
+      });
   }
 
   public onSiteSelected(site: Site): void {
@@ -56,7 +75,42 @@ export class PagesComponent extends BaseComponent implements OnInit {
   }
 
   public askForPageDeletion(page: Page): void {
+    const initialConfirmState = this.buildConfirmModalState(page.name);
+    const modalOptions: ModalOptions = {
+      initialState: initialConfirmState
+    };
+    const modalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, modalOptions);
 
+    modalRef.content.confirmed.pipe(take(1))
+      .subscribe((confirmed: boolean) => {
+        if (confirmed) {
+          this.deletePage(page);
+        }
+      });
+  }
+
+  private buildConfirmModalState(pageName: string): any {
+    const translations = this.translate.instant(PagesComponent.DELETE_CONFIRM_KEYS, { pageName: pageName });
+
+    return {
+      title: translations[PagesComponent.DELETE_CONFIRM_KEYS[0]],
+      body: translations[PagesComponent.DELETE_CONFIRM_KEYS[1]],
+      okBtn: translations[PagesComponent.DELETE_CONFIRM_KEYS[2]],
+      closeBtn: translations[PagesComponent.DELETE_CONFIRM_KEYS[3]],
+    };
+  }
+
+  private deletePage(page: Page): void {
+    this.loading();
+    this.pageService.deletePage(page.id).pipe(
+      takeUntil(this.ngUnsubscribe)
+    ).subscribe((res: boolean) => {
+      if (res) {
+        this.success = 'COMPONENT.PAGES.DELETE.success';
+        this.setPage(this.currentPage);
+      }
+      this.doneLoading();
+    });
   }
 
 }

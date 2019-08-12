@@ -57,12 +57,15 @@ export class SiteService {
           }
         ),
         catchError((error: HttpErrorResponse) => {
-            if (error.error.title === 'site.name.not-unique') {
+            if (error.error.key === 'site_name_not_unique') {
               EmitterService.of('siteError').emit('SERVICE.ERRORS.SITE.name.not-unique');
-            } else if (error.error.title === 'site.path.not-unique') {
+            } else if (error.error.key === 'site_path_not_unique') {
               EmitterService.of('siteError').emit('SERVICE.ERRORS.SITE.path.not-unique');
+            } else if (error.error.key === 'path_not_unique') {
+                EmitterService.of('siteError').emit('SERVICE.ERRORS.path.not-unique');
             } else {
               EmitterService.of('siteError').emit('COMMON.ERRORS.something.wrong');
+              console.log("error")
             }
 
           return of(null);
@@ -75,10 +78,12 @@ export class SiteService {
       .pipe(
         map((res: any) => MappingUtil.mapItemToSite(res.data)),
         catchError((error: HttpErrorResponse) => {
-          if (error.error.title === 'site.name.not-unique') {
+          if (error.error.key === 'site.name.not-unique') {
             EmitterService.of('siteError').emit('SERVICE.ERRORS.SITE.name.not-unique');
-          } else if (error.error.title === 'site.path.not-unique') {
+          } else if (error.error.key === 'site.path.not-unique') {
             EmitterService.of('siteError').emit('SERVICE.ERRORS.SITE.path.not-unique');
+          } else if (error.error.key === 'path.not-unique') {
+            EmitterService.of('siteError').emit('SERVICE.ERRORS.path.not-unique');
           } else {
             EmitterService.of('siteError').emit('COMMON.ERRORS.something.wrong');
           }

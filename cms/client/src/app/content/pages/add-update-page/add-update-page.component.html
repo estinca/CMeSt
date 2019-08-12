@@ -48,7 +48,7 @@
             <span *ngIf="page === null">{{'COMPONENT.PAGES.ADD.submit.btn' | translate}}</span>
             <span *ngIf="page !== null">{{'COMPONENT.PAGES.UPDATE.submit.btn' | translate}}</span>
           </button>
-          <a [routerLink]="['/sites']" class="btn btn-danger">
+          <a [routerLink]="['/pages']" class="btn btn-danger">
             <i class="fa fa-ban"></i>&nbsp;
             <span *ngIf="page === null">{{'COMPONENT.PAGES.ADD.cancel.btn' | translate}}</span>
             <span *ngIf="page !== null">{{'COMPONENT.PAGES.UPDATE.cancel.btn' | translate}}</span>

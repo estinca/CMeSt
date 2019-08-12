@@ -48,7 +48,10 @@ export class SitesComponent extends BaseComponent implements OnInit {
 
     EmitterService.of('siteError')
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((error: string) => this.error = error);
+      .subscribe((error: string) => {
+        this.error = error
+        this.doneLoading();
+      });
   }
 
   public setPage(page: number): void {

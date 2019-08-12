@@ -22,11 +22,13 @@ const routes: Routes = [
       {
         path: 'dashboard',
         component: DashboardComponent,
+        canActivate: [AuthGuardService],
         data: { breadCrumbs: BreadCrumbConfig.getBreadCrumbConfig(RouteType.DASHBOARD)}
       },
       {
         path: 'sites',
         component: SitesComponent,
+        canActivate: [AuthGuardService],
         data: { breadCrumbs: BreadCrumbConfig.getBreadCrumbConfig(RouteType.SITES)}
       },
       {
@@ -44,6 +46,7 @@ const routes: Routes = [
       {
         path: 'pages',
         component: PagesComponent,
+        canActivate: [AuthGuardService],
         data: { breadCrumbs: BreadCrumbConfig.getBreadCrumbConfig(RouteType.PAGES)}
       },
       {
@@ -53,7 +56,7 @@ const routes: Routes = [
         data: {breadCrumbs: BreadCrumbConfig.getBreadCrumbConfig(RouteType.PAGES_ADD)}
       },
       {
-        path: 'pages/update/:id',
+        path: 'sites/:siteId/pages/:id/update',
         component: AddUpdatePageComponent,
         canActivate: [AuthGuardService],
         data: {breadCrumbs: BreadCrumbConfig.getBreadCrumbConfig(RouteType.PAGES_UPDATE)}

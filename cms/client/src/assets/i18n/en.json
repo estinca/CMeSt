@@ -47,7 +47,8 @@
       },
       "PAGE": {
         "name.not-unique": "There is already a page with this name and parent."
-      }
+      },
+      "path.not-unique": "Path already exists"
     }
   },
   "COMPONENT": {
@@ -100,6 +101,12 @@
         "submit.btn": "Update",
         "cancel.btn": "Cancel",
         "success": "Successfully updated the page"
+      },
+      "DELETE": {
+         "title": "Are you sure?",
+         "body": "Are you sure you want to delete <strong>{{ pageName }}</strong>?",
+         "ok": "Yes",
+         "close": "No"
       }
     }
   }

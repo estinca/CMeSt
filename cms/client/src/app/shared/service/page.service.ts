@@ -97,6 +97,13 @@ export class PageService {
     );
   }
 
+  public deletePage(id: string): Observable<boolean> {
+    return this.restService.delete(`/pages/${id}`, this.authService.getToken()).pipe(
+      map(res => true),
+      catchSomethingWrong('siteError', false)
+    );
+  }
+
   private mapPageCollection(): OperatorFunction<any, PaginatedCollection> {
     return map(res => {
       const pages: Page[] = [];
