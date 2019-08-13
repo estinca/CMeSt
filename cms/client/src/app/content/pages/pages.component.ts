@@ -62,7 +62,7 @@ export class PagesComponent extends BaseComponent implements OnInit {
   public setPage(page: number): void {
     if (this.site !== null && this.treeItem !== null) {
       this.loading();
-      this.pageService.getPagesBySiteAndParent(this.site.id, page, this.treeItem.id, !!this.treeItem.isSite)
+      this.pageService.getPagesBySiteAndParent(this.site.id, page, this.treeItem.id, true )
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((collection: PaginatedCollection) => {
           if (collection != null) {
@@ -74,8 +74,8 @@ export class PagesComponent extends BaseComponent implements OnInit {
     }
   }
 
-  public askForPageDeletion(page: Page): void {
-    const initialConfirmState = this.buildConfirmModalState(page.name);
+  public askForPageDeletion(site: Site, page: Page): void {
+    const initialConfirmState = this.buildConfirmModalState(page.name + " from " + site.name);
     const modalOptions: ModalOptions = {
       initialState: initialConfirmState
     };
@@ -84,7 +84,7 @@ export class PagesComponent extends BaseComponent implements OnInit {
     modalRef.content.confirmed.pipe(take(1))
       .subscribe((confirmed: boolean) => {
         if (confirmed) {
-          this.deletePage(page);
+          this.deletePage(site, page);
         }
       });
   }
@@ -100,9 +100,10 @@ export class PagesComponent extends BaseComponent implements OnInit {
     };
   }
 
-  private deletePage(page: Page): void {
+  private deletePage(site: Site, page: Page): void {
     this.loading();
-    this.pageService.deletePage(page.id).pipe(
+    this.success = null;
+    this.pageService.deletePage(site.id, page.id).pipe(
       takeUntil(this.ngUnsubscribe)
     ).subscribe((res: boolean) => {
       if (res) {

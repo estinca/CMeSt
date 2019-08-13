@@ -49,7 +49,7 @@ public class PageDB {
     @Column(name = "published", nullable = false)
     private boolean published;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name = "parent_id", nullable = true)
     private PageDB parent;
 
@@ -64,7 +64,7 @@ public class PageDB {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
 
-    @ManyToOne(cascade = CascadeType.REMOVE, optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "site_id", nullable = false)
     private SiteDB site;
 

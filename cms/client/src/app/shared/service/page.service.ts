@@ -97,8 +97,8 @@ export class PageService {
     );
   }
 
-  public deletePage(id: string): Observable<boolean> {
-    return this.restService.delete(`/pages/${id}`, this.authService.getToken()).pipe(
+  public deletePage(siteId: string, id: string): Observable<boolean> {
+    return this.restService.delete(`/sites/${siteId}/pages/${id}`, this.authService.getToken()).pipe(
       map(res => true),
       catchSomethingWrong('siteError', false)
     );

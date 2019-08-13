@@ -51,6 +51,11 @@ public class PageJsonConverter {
     }
 
     private PageResponse toJsonForDetail(Page page) {
+    	
+    	if(page == null) {
+    		return null;
+    	}
+    	
         return PageResponse.builder()
                 .id(page.getId())
                 .name(page.getName())
@@ -71,7 +76,7 @@ public class PageJsonConverter {
                 .path(page.getPath())
                 .published(page.isPublished())
                 .site(null)
-                .parent(null)
+                .parent(toJsonForDetail(page.getParent()))
                 .createdAt(page.getCreatedAt())
                 .updatedAt(page.getUpdatedAt())
                 .build();

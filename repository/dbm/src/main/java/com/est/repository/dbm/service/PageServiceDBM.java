@@ -29,19 +29,19 @@ import lombok.var;
 public class PageServiceDBM implements PageService {
 
     private final PageDAO repository;
-    private final PageConverter converter;
+    private final PageConverter pageConverter;
     private final SiteConverter siteConverter;
 
     @Autowired
     public PageServiceDBM(PageDAO repository, PageConverter pageConverter, SiteConverter siteConverter) {
         this.repository = repository;
-        this.converter = pageConverter;
+        this.pageConverter = pageConverter;
         this.siteConverter = siteConverter;
     }
 
     @Override
     public Optional<Page> getPageById(String id) {
-        return repository.findById(id).map(converter::fromDBWithChildren);
+        return repository.findById(id).map(pageConverter::fromDBWithChildren);
     }
 
     @Override
@@ -57,7 +57,7 @@ public class PageServiceDBM implements PageService {
         var basePath = page.getParent() != null ? UrlUtils.addTrailingSlash(page.getParent().getPath()) : "/";
         page.setPath(UrlUtils.optimizeUrl(basePath + page.getName()));
 
-        return converter.fromDB(repository.saveAndFlush(converter.toDB(page, false)));
+        return pageConverter.fromDB(repository.saveAndFlush(pageConverter.toDB(page, false)));
     }
 
     @Override
@@ -77,42 +77,42 @@ public class PageServiceDBM implements PageService {
         var basePath = newPage.getParent() != null ? UrlUtils.addTrailingSlash(newPage.getParent().getPath()) : "/";
         newPage.setPath(UrlUtils.optimizeUrl(basePath + newPage.getName()));
 
-        return converter.fromDB(repository.saveAndFlush(converter.toDB(newPage, true)));
+        return pageConverter.fromDB(repository.saveAndFlush(pageConverter.toDB(newPage, true)));
     }
 
     @Override
     public void delete(Page page) {
-        repository.delete(converter.toDB(page, true));
+        repository.delete(pageConverter.toDB(page, true));
     }
 
     @Override
     public Optional<Page> getPageByName(String name) {
-        return repository.findByName(name).map(converter::fromDB);
+        return repository.findByName(name).map(pageConverter::fromDB);
     }
     
     @Override
     public Optional<Page> getPageByPath(String path) {
-        return repository.findByPath(path).map(converter::fromDB);
+        return repository.findByPath(path).map(pageConverter::fromDB);
     }
 
     @Override
     public List<Page> getPagesBySite(Site site) {
         return repository.findBySite(siteConverter.toDB(site, true))
                 .stream()
-                .map(converter::fromDB)
+                .map(pageConverter::fromDB)
                 .collect(Collectors.toList());
     }
 
     @Override
     public org.springframework.data.domain.Page<Page> getPagesBySite(Site site, Pageable pageable) {
         return repository.findBySite(siteConverter.toDB(site, true), pageable)
-                .map(converter::fromDB);
+                .map(pageConverter::fromDB);
     }
 
     @Override
     public org.springframework.data.domain.Page<Page> getPagesBySiteAndParent(Site site, Page parent, boolean includeParent, Pageable pageable) {
         var siteDB = siteConverter.toDB(site, true);
-        var parentDB = converter.toDB(parent, true);
+        var parentDB = pageConverter.toDB(parent, true);
         org.springframework.data.domain.Page<PageDB> pages;
 
         if (includeParent) {
@@ -121,13 +121,13 @@ public class PageServiceDBM implements PageService {
             pages = repository.findBySiteAndParentOrderByNameAsc(siteDB, parentDB, pageable);
         }
 
-        return pages.map(converter::fromDB);
+        return pages.map(pageConverter::fromDB);
     }
 
     @Override
     public Page getRootPageForSite(Site site) throws BrakingRepositoryException {
         return repository.findBySiteAndParentIsNull(siteConverter.toDB(site, true))
-                .map(converter::fromDBWithChildren)
+                .map(pageConverter::fromDBWithChildren)
                 .orElseThrow(() -> new BrakingRepositoryException("This site does not have a root. This should not be possible"));
     }
 }

@@ -106,7 +106,8 @@
          "title": "Are you sure?",
          "body": "Are you sure you want to delete <strong>{{ pageName }}</strong>?",
          "ok": "Yes",
-         "close": "No"
+         "close": "No",
+         "success": "Page was deleted"
       }
     }
   }

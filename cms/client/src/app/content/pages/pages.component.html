@@ -43,7 +43,7 @@
                   <br />
                   <span class="text-muted">{{page.path}}</span>
                 </td>
-                <td>{{page.name}}</td>
+                <td></td>
                 <td>
                   <img src="/assets/img/status/offline.png" *ngIf="!page.published">
                   <img src="/assets/img/status/online.png" *ngIf="page.published">
@@ -59,7 +59,7 @@
                     <i class="fa fa-pencil"></i>
                   </a>
                   &nbsp;
-                  <a class="btn btn-danger" (click)="askForPageDeletion(page)">
+                  <a class="btn btn-danger" (click)="askForPageDeletion(site, page)" *ngIf="page.parent">
                     <i class="fa fa-trash"></i>
                   </a>
                 </td>
