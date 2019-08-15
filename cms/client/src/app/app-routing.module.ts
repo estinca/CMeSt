@@ -12,6 +12,7 @@ import { SitesComponent } from './content/sites/sites.component';
 import { AddUpdateSiteComponent } from './content/sites/add-update-site/add-update-site.component';
 import { PagesComponent } from './content/pages/pages.component';
 import { AddUpdatePageComponent } from './content/pages/add-update-page/add-update-page.component';
+import { PageStructureComponent } from './content/pages/page-structure/page-structure.component';
 
 const routes: Routes = [
   {
@@ -60,6 +61,12 @@ const routes: Routes = [
         component: AddUpdatePageComponent,
         canActivate: [AuthGuardService],
         data: {breadCrumbs: BreadCrumbConfig.getBreadCrumbConfig(RouteType.PAGES_UPDATE)}
+      },
+      {
+        path: 'sites/:siteId/pages/:id/structure',
+        component: PageStructureComponent,
+        canActivate: [AuthGuardService],
+        data: {breadCrumbs: BreadCrumbConfig.getBreadCrumbConfig(RouteType.PAGES_STRUCTURE)}
       }
     ],
       canActivate: [AuthGuardService]

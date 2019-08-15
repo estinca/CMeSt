@@ -7,10 +7,11 @@ import {PagesComponent} from './pages/pages.component';
 import {PagesTreeComponent} from './pages/pages-tree/pages-tree.component';
 import {PagesTreeBranchComponent} from './pages/pages-tree/pages-tree-branch/pages-tree-branch.component';
 import {AddUpdatePageComponent} from './pages/add-update-page/add-update-page.component';
+import { PageStructureComponent } from './pages/page-structure/page-structure.component';
 
 @NgModule({
   imports: [
-    SharedModule
+    SharedModule,
   ],
   declarations: [
     DashboardComponent,
@@ -19,7 +20,8 @@ import {AddUpdatePageComponent} from './pages/add-update-page/add-update-page.co
     PagesComponent,
     PagesTreeComponent,
     PagesTreeBranchComponent,
-    AddUpdatePageComponent
+    AddUpdatePageComponent,
+    PageStructureComponent
   ]
 })
 export class ContentModule {
